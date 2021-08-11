@@ -1,4 +1,4 @@
-package teamgames
+package teams
 
 import (
 	"context"

@@ -1,4 +1,4 @@
-package teamgames
+package teams
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 )
 
 // QueryTeamGames
-func QueryTeamGames(db string, uri string, key string, value string) ([]TeamGames, error) {
+func QueryTeamGames(db string, uri string, key string, value string) ([]Team, error) {
 	var err error
 	var client *mongo.Client
 
@@ -28,16 +28,16 @@ func QueryTeamGames(db string, uri string, key string, value string) ([]TeamGame
 	defer client.Disconnect(ctx)
 
 	// get the personnel collection
-	coll := client.Database(db).Collection("teamgames")
+	coll := client.Database(db).Collection("teams")
 
 	// is there a key and value?
 	var cursor *mongo.Cursor
-	if (key == "")&&(value == "") {
+	if (key == "") && (value == "") {
 		// get all documents
 		cursor, err = coll.Find(ctx, bson.D{})
 	} else {
 		// get by key/value
-		cursor, err = coll.Find(ctx, bson.D{{Key:key,Value:value}})
+		cursor, err = coll.Find(ctx, bson.D{{Key: key, Value: value}})
 	}
 	if err != nil {
 		return nil, err
@@ -56,9 +56,9 @@ func QueryTeamGames(db string, uri string, key string, value string) ([]TeamGame
 	}
 
 	// decode all matching records
-	var teamGames []TeamGames
+	var teamGames []Team
 	for cursor.Next(ctx) {
-		var t TeamGames
+		var t Team
 
 		// decode into a team
 		err = cursor.Decode(&t)
