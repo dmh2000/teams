@@ -9,12 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const loaderDatabaseName = "retrosheet"
-
-
 // LoadTeamGames ...
-func LoadTeamGames(uri string, fname string) error {
-	var teamGames []TeamGames
+func LoadTeamGames(db string, uri string, teamGames []TeamGames) error {
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
@@ -24,12 +20,6 @@ func LoadTeamGames(uri string, fname string) error {
 	defer cancel()
 
 	err = client.Connect(ctx)
-	if err != nil {
-		return err
-	}
-
-	// read the team-games json data
-	teamGames, err = ReadTeamGames(fname)
 	if err != nil {
 		return err
 	}
@@ -54,7 +44,7 @@ func LoadTeamGames(uri string, fname string) error {
 	}
 
 	// get the collection
-	coll := client.Database(loaderDatabaseName).Collection("teamgames")
+	coll := client.Database(db).Collection("teamgames")
 
 	// insert the documents
 	res, err := coll.InsertMany(ctx, dox)

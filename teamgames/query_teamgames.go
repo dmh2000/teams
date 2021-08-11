@@ -9,8 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// GetTeamGamesByID full inline
-func GetTeamGamesByID(db string, uri string, id string) ([]TeamGames, error) {
+// QueryTeamGames
+func QueryTeamGames(db string, uri string, key string, value string) ([]TeamGames, error) {
 	var err error
 	var client *mongo.Client
 
@@ -30,8 +30,15 @@ func GetTeamGamesByID(db string, uri string, id string) ([]TeamGames, error) {
 	// get the personnel collection
 	coll := client.Database(db).Collection("teamgames")
 
-	// find documents that have the key "abbr" with the specified value
-	cursor, err := coll.Find(ctx, bson.D{{Key: "ID", Value: id}})
+	// is there a key and value?
+	var cursor *mongo.Cursor
+	if (key == "")&&(value == "") {
+		// get all documents
+		cursor, err = coll.Find(ctx, bson.D{})
+	} else {
+		// get by key/value
+		cursor, err = coll.Find(ctx, bson.D{{Key:key,Value:value}})
+	}
 	if err != nil {
 		return nil, err
 	}
