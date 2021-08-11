@@ -1,9 +1,16 @@
-import dmh2000.xyz/teamgames
-
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/dmh2000/teamgames/teamgames"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	err := teamgames.MergeTeams("teams.json","team-games.json")
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }

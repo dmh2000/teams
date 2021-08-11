@@ -7,7 +7,8 @@ import (
 
 // TeamGames ...
 type TeamGames struct {
-	ID				string `json:"ID,omitempty"`
+	ID              string `json:"ID,omitempty"`
+	Name			string `json:"name,omitempty"`
 	Wins			int `json:"wins,omitempty"`
 	Losses			int `json:"losses,omitempty"`
 	Ties			int `json:"ties,omitempty"`
@@ -15,6 +16,7 @@ type TeamGames struct {
 	Games			int `json:"games,omitempty"`
 	UUID			string `json:"uuid,omitempty"`
 }
+
 
 // ReadTeamGames - reads the json file and returns a slice of data
 func ReadTeamGames(fname string) ([]TeamGames, error) {

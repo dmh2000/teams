@@ -1,4 +1,4 @@
-module dmh2000.xyz/teamgames
+module github.com/dmh2000/teamgames
 
 go 1.16
 
