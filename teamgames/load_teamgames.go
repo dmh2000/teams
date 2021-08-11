@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/dmh2000/retrosheet/src/jsontypes"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -15,7 +14,7 @@ const loaderDatabaseName = "retrosheet"
 
 // LoadTeamGames ...
 func LoadTeamGames(uri string, fname string) error {
-	var teamGames []jsontypes.TeamGames
+	var teamGames []TeamGames
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
@@ -30,7 +29,7 @@ func LoadTeamGames(uri string, fname string) error {
 	}
 
 	// read the team-games json data
-	teamGames, err = jsontypes.ReadTeamGames(fname)
+	teamGames, err = ReadTeamGames(fname)
 	if err != nil {
 		return err
 	}

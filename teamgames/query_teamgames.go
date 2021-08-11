@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 
-	"github.com/dmh2000/retrosheet/src/jsontypes"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // GetTeamGamesByID full inline
-func GetTeamGamesByID(db string, uri string, id string) ([]jsontypes.TeamGames, error) {
+func GetTeamGamesByID(db string, uri string, id string) ([]TeamGames, error) {
 	var err error
 	var client *mongo.Client
 
@@ -50,9 +49,9 @@ func GetTeamGamesByID(db string, uri string, id string) ([]jsontypes.TeamGames, 
 	}
 
 	// decode all matching records
-	var teamGames []jsontypes.TeamGames
+	var teamGames []TeamGames
 	for cursor.Next(ctx) {
-		var t jsontypes.TeamGames
+		var t TeamGames
 
 		// decode into a team
 		err = cursor.Decode(&t)
