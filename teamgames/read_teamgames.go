@@ -5,27 +5,26 @@ import (
 	"io/ioutil"
 )
 
-// TeamGames ...
-type TeamGames struct {
-	ID              string `json:"ID,omitempty"`
-	Name			string `json:"name,omitempty"`
-	Wins			int `json:"wins,omitempty"`
-	Losses			int `json:"losses,omitempty"`
-	Ties			int `json:"ties,omitempty"`
-	Other			int `json:"other,omitempty"`
-	Games			int `json:"games,omitempty"`
-	UUID			string `json:"uuid,omitempty"`
+// Team ...
+type Team struct {
+	ID     string `json:"ID,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Wins   int    `json:"wins,omitempty"`
+	Losses int    `json:"losses,omitempty"`
+	Ties   int    `json:"ties,omitempty"`
+	Other  int    `json:"other,omitempty"`
+	Games  int    `json:"games,omitempty"`
+	UUID   string `json:"uuid,omitempty"`
 }
 
-
 // ReadTeamGames - reads the json file and returns a slice of data
-func ReadTeamGames(fname string) ([]TeamGames, error) {
+func ReadTeamGames(fname string) ([]Team, error) {
 	jsonBlob, err := ioutil.ReadFile(fname)
 	if err != nil {
 		return nil, err
 	}
 
-	var tg []TeamGames
+	var tg []Team
 
 	err = json.Unmarshal(jsonBlob, &tg)
 	if err != nil {
@@ -34,4 +33,3 @@ func ReadTeamGames(fname string) ([]TeamGames, error) {
 
 	return tg, nil
 }
-
