@@ -13,7 +13,7 @@ const mongdbUrl = "mongodb://172.17.48.1:27017"
 const database = "bb-team-games"
 
 // print one instance of teams
-func printTeam(t teams.Teams) {
+func printTeam(t teams.Team) {
 	fmt.Println("ID    :", t.ID)
 	fmt.Println("Name  :", t.Name)
 	fmt.Println("Wins  :", t.Wins)
@@ -26,38 +26,53 @@ func main() {
 	fmt.Println("Populating Database")
 
 	// drop the existing database so it starts clean
+	// make sure the database name above is ok to drop!
 	teams.DropDatabase(mongdbUrl, database)
 
+	// ======================================
 	// read the JSON file, returns a slice of teams
-	tg, err := teams.ReadTeams("team-games.json")
-
+	// ======================================
+	tg, err := teams.ReadTeams("teams.json")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// load into the database (be sure to drop it first or you will get duplicates	)
+	// ======================================
+	// load the data into the database
+	// ======================================
 	err = teams.LoadTeams(mongdbUrl, database, tg)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// note when querying : in mongodb the field names are all lower case
-	// in the Go context they are according to the struct definition
-	// which is title case
-
+	// ======================================
+	// Database Queries
+	// ======================================
 	// query the database for all documents
 	r, err := teams.QueryTeams(database, mongdbUrl, "", "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	// should return 151
+	// should return 150
 	fmt.Println(len(r))
 
-	// query for a specific document
+	// query mongodb for a specific document
+	// note when querying in mongodb the field names are all lower case
+	// In the Go context they are according to the struct definition which is title case
 	r, err = teams.QueryTeams(database, mongdbUrl, "id", "WAS")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	printTeam(r[0])
+
+	// query mongodb for a specific document
+	// note when querying in mongodb the field names are all lower case
+	// In the Go context they are according to the struct definition which is title case
+	r, err = teams.QueryTeams(database, mongdbUrl, "name", "Nationals")
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -34,7 +34,7 @@ func DropDatabase(uri string, db string) error {
 	return nil
 }
 
-// LoadTeamGames ...
+// LoadTeams ...
 func LoadTeams(uri string, db string, teams []Team) error {
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))

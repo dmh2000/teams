@@ -17,8 +17,8 @@ type Team struct {
 	UUID   string `json:"uuid,omitempty"`
 }
 
-// ReadTeamGames - reads the json file and returns a slice of data
-func ReadTeamGames(fname string) ([]Team, error) {
+// ReadTeam - reads the json file and returns a slice of data
+func ReadTeams(fname string) ([]Team, error) {
 	jsonBlob, err := ioutil.ReadFile(fname)
 	if err != nil {
 		return nil, err

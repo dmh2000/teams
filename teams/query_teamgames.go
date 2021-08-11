@@ -9,8 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// QueryTeamGames
-func QueryTeamGames(db string, uri string, key string, value string) ([]Team, error) {
+// QueryTeams
+func QueryTeams(db string, uri string, key string, value string) ([]Team, error) {
 	var err error
 	var client *mongo.Client
 
