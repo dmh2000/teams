@@ -26,6 +26,16 @@ The main program runs through all the steps to get this going. At each step you 
   - using encoding/json, unmarshal it into Go objects
   - at this point you have a slice of Team objects
 
+The data used here is derived from the data products provided by [Retrosheet.org](retrosheet.org). Retrosheet does a lot of work to provide historical baseball data going all the way back to 1876. The data used here is a very small subset of what they provide.
+
+Thanks to Retrosheet for making this data available.
+
+<pre>
+     The information used here was obtained free of
+     charge from and is copyrighted by Retrosheet.  Interested
+     parties may contact Retrosheet at "www.retrosheet.org". 
+</pre>
+
 ## 2. Load it into Mongodb
 
 - _teams/load_teams.go_
