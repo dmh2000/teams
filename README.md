@@ -114,6 +114,17 @@ Once the server is running you can execute some client side queries against it. 
 }
 ```
 
+### Typescript/Node Client
+
+The _client_ directory implements a simple command line client that is written in TypeScript and runs with node.js.
+
+- go run main.go
+- cd _client_
+- edit index.ts and set the server IP:PORT for your system
+- npm install
+- npm start
+  - uses tsc and nodemon watchers so you can change the typescript code and the compilation and execution will run automatically
+
 ### Using Postman
 
 - Install [Postman](www.postman.com)

@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build --watch tsconfig.json",
+    "build": "tsc --build tsconfig.json",
     "start": "tsc --watch & nodemon --watch ./js ./js/index.js"
   },
   "author": "",
