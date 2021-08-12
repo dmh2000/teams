@@ -56,7 +56,7 @@ func QueryTeams(uri string, db string, key string, value string) ([]Team, error)
 	}
 
 	// decode all matching records
-	var teamGames []Team
+	var teams []Team
 	for cursor.Next(ctx) {
 		var t Team
 
@@ -67,7 +67,7 @@ func QueryTeams(uri string, db string, key string, value string) ([]Team, error)
 		}
 
 		// add to list
-		teamGames = append(teamGames, t)
+		teams = append(teams, t)
 	}
-	return teamGames, nil
+	return teams, nil
 }

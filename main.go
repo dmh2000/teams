@@ -13,28 +13,33 @@ const serveradr = "172.17.59.222:8080"
 const mongouri = "mongodb://172.17.48.1:27017"
 
 // set this to the database name that will be created on your mongodb instance
-const database = "bb-team-games"
+const database = "bb-teams"
 
 // set this to thenstance ofname  teams
 func printTeam(t teams.Team) {
-	fmt.Println("ID    :", t.ID)
-	fmt.Println("Name  :", t.Name)
-	fmt.Println("Wins  :", t.Wins)
-	fmt.Println("Losses:", t.Losses)
-	fmt.Println("Ties  :", t.Ties)
-	fmt.Println("Other :", t.Other)
-}
+	fmt.Println("    ID       : ", t.ID)
+	fmt.Println("    Name     : ", t.Name)
+	fmt.Println("    Location : ", t.Location)
+	fmt.Println("    Year     : ",t.Year)
+	fmt.Println("    Wins     : ", t.Wins)
+	fmt.Println("    Losses   : ", t.Losses)
+	fmt.Println("    Ties     : ", t.Ties)
+	fmt.Println("    Other    : ", t.Other)
+	fmt.Println("    Games    : ", t.Games)
+
+	fmt.Println();
+}    
 
 func main() {
-	fmt.Println("Populating Database")
-
 	// drop the existing database so it starts clean
 	// make sure the database name above is ok to drop!
+	fmt.Println("Drop Database")
 	teams.DropDatabase(mongouri, database)
 
 	// ======================================
 	// 1. Read Json File
 	// ======================================
+	fmt.Println("Read JSON")
 	tg, err := teams.ReadTeams("teams.json")
 	if err != nil {
 		fmt.Println(err)
@@ -44,6 +49,7 @@ func main() {
 	// ======================================
 	// 2. Load it into Mongodb
 	// ======================================
+	fmt.Println("Upload to Mongodb")
 	err = teams.LoadTeams(mongouri, database, tg)
 	if err != nil {
 		fmt.Println(err)
@@ -53,14 +59,15 @@ func main() {
 	// ======================================
 	// 3. Make sure the database works
 	// ======================================
+	fmt.Println("Test Queries")
 	// query the database for all documents
 	r, err := teams.QueryTeams(mongouri, database, "", "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	// should return 150
-	fmt.Println(len(r))
+	// print len, should be 150 entries
+	fmt.Print("    Teams    : ",len(r),"\n\n")
 
 	// query mongodb for a specific document
 	// note when querying in mongodb the field names are all lower case
@@ -85,5 +92,10 @@ func main() {
 	// ======================================
 	// GraphQL Server
 	// ======================================
+	fmt.Printf("Database : %s\n", database)
+	fmt.Printf("Mongodb  : %s\n", mongouri)
+	fmt.Printf("GraphQL  : %s\n", serveradr)
+	fmt.Println("Listening...")
+
 	teams.Serve(serveradr, mongouri, database)
 }

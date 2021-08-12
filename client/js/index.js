@@ -25,10 +25,13 @@ function queryByName(name) {
       teamsByName(name: "${name}") {
         id
         name
+        location
+        year
         wins
         losses
         ties
         other
+        games
         uuid
       }
     }
@@ -48,10 +51,13 @@ function queryByID(id) {
       teamsByID(id: "${id}") {
         id
         name
+        location
+        year
         wins
         losses
         ties
         other
+        games
         uuid
       }
     }
@@ -71,17 +77,38 @@ function queryAll() {
       teamsAll() {
         id
         name
-        wins
-        losses
-        ties
-        other
-        uuid
+        location
+        year
       }
     }
   `;
+        // some print helpers
+        const pad = (s) => {
+            const lim = 15 - s.length;
+            for (let i = 0; i < lim; i++) {
+                s = s + " ";
+            }
+            return s;
+        };
+        const printTeam = (t) => {
+            console.log(`${pad(t.name)} : ${t.year} : ${t.location}`);
+        };
         graphql_request_1.request(exports.serverIP, query, null, exports.requestHeaders)
             // just print the length. should be 150
-            .then((data) => console.log("teamsAll : ", data.teamsAll.length))
+            .then((data) => {
+            let t = data.teamsAll;
+            // sort by year then by name so names are grouped together
+            // then listed in numeric order
+            t = t.sort((a, b) => {
+                return a.year > b.year ? 1 : a.year < b.year ? -1 : 0;
+            });
+            t = t.sort((a, b) => {
+                return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+            });
+            t.forEach((v) => {
+                printTeam(v);
+            });
+        })
             .catch((err) => {
             console.log(err);
         });

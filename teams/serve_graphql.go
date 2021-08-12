@@ -1,7 +1,6 @@
 package teams
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -36,10 +35,13 @@ This must match the Team type except inu all lower case
 type Team {
 	id: String!
 	name : String!,
+	location: String!,
+	year: String!,
 	wins: Int!,
 	losses: Int!,
 	ties: Int!,
 	other: Int!,
+	games: Int!,
 	uuid: String!
 }
 `
@@ -50,14 +52,16 @@ type Team {
 /*
 There must be one Resolver function for each Field in the Team Struct
 type Team struct {
-	ID     string `json:"ID,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Wins   int    `json:"wins,omitempty"`
-	Losses int    `json:"losses,omitempty"`
-	Ties   int    `json:"ties,omitempty"`
-	Other  int    `json:"other,omitempty"`
-	Games  int    `json:"games,omitempty"`
-	UUID   string `json:"uuid,omitempty"`
+	ID     string `json:"ID"`
+	Name   string `json:"name"`
+	Location   string `json:"location"`
+	Year   string `json:"year"`
+	Wins   int    `json:"wins"`
+	Losses int    `json:"losses"`
+	Ties   int    `json:"ties"`
+	Other  int    `json:"other"`
+	Games  int    `json:"games"`
+	UUID   string `json:"uuid"`
 }
 */
 type teamResolver struct {
@@ -70,6 +74,14 @@ func (r *teamResolver) ID() string {
 
 func (r *teamResolver) Name() string {
 	return r.t.Name
+}
+
+func (r *teamResolver) Location() string {
+	return r.t.Location
+}
+
+func (r *teamResolver) Year() string {
+	return r.t.Year
 }
 
 func (r *teamResolver) Wins() int32 {
@@ -88,6 +100,10 @@ func (r *teamResolver) Other() int32 {
 	return int32(r.t.Other)
 }
 
+func (r *teamResolver) Games() int32 {
+	return int32(r.t.Games)
+}
+
 func (r *teamResolver) UUID() string {
 	return r.t.UUID
 }
@@ -100,7 +116,6 @@ type rootResolver struct{}
 
 // get team by abbreviation
 func (*rootResolver) TeamsByID(args struct{ ID string }) *[]*teamResolver {
-	fmt.Println("ByID")
 	// query the db for the team by the abbreviation
 	// remember, in mongodb the keys are lower case
 	teams, err := QueryTeams(mongodb, database, "id", args.ID)
@@ -135,7 +150,6 @@ func (*rootResolver) TeamsByName(args struct{ Name string }) *[]*teamResolver {
 }
 
 func (*rootResolver) TeamsAll() *[]*teamResolver {
-	fmt.Println("TeamsAll")
 	// query the db for the team by the abbreviation
 	teams, err := QueryTeams(mongodb, database, "", "")
 	if err != nil {
@@ -166,7 +180,7 @@ func Serve(portip string, mongo string, db string) {
 	mongodb = mongo
 	database = db
 
-	// use cors middleware
+	// use cors middleware in case queries come from different domain
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,

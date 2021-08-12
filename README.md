@@ -35,10 +35,32 @@ The main program runs through all the steps to get this going. At each step you 
 - a JSON file _teams.json_ is included
 - _teams/read_teams.go_
   - function _read_teams_
-  - includes type definition of _Team_
   - read the JSON file
   - using encoding/json, unmarshal it into Go objects
-  - at this point you have a slice of Team objects
+
+### The Data
+
+- at this point you have a slice of Team objects
+
+  - there can and will be multiple teams for most Names because the data goes back to 1876 and it differentiates teams when they move cities
+  - there is a whole lot of data in Retrosheet, but I boiled this down to a few fields to use as an example.
+
+  - type definition of _Team_
+
+```Go
+type Team struct {
+	ID     string     // Abbreviation of team name from Retrosheet data
+	Name   string     // Name of the team
+  Location string   // city or state
+  Year   string     // year the franchise started
+	Wins   int        // total wins
+	Losses int        // total losses
+	Ties   int        // total ties (yes there can be ties!)
+	Other  int        // total rainouts and other suspensions
+	Games  int        // sum of wins,losses,ties and other
+	UUID   string     // a unique ID I added as a key
+}
+```
 
 ## 2. Load it into Mongodb
 
@@ -100,23 +122,34 @@ Once the server is running you can execute some client side queries against it. 
     teamsByName(name: "Orioles") {
         id
         name
+        location
+        year
         wins
         losses
+        ties
         other
+        games
         uuid
     }
 
     teamsByID(id: "WAS") {
         id
         name
+        location
+        year
         wins
         losses
+        ties
         other
+        games
         uuid
     }
 
     teamsAll {
+        id
         name
+        location
+        year
     }
 
 }
@@ -132,6 +165,8 @@ The _client_ directory implements a simple command line client that is written i
 - npm install
 - npm start
   - uses tsc and nodemon watchers so you can change the typescript code and the compilation and execution will run automatically
+
+A tiny bit of the Retrosheet data is incomplete so there could be an 'unknown' show up here or there.
 
 ### Using Postman
 

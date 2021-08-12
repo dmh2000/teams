@@ -15,10 +15,13 @@ async function queryByName(name: string) {
       teamsByName(name: "${name}") {
         id
         name
+        location
+        year
         wins
         losses
         ties
         other
+        games
         uuid
       }
     }
@@ -38,10 +41,13 @@ async function queryByID(id: string) {
       teamsByID(id: "${id}") {
         id
         name
+        location
+        year
         wins
         losses
         ties
         other
+        games
         uuid
       }
     }
@@ -61,18 +67,44 @@ async function queryAll() {
       teamsAll() {
         id
         name
-        wins
-        losses
-        ties
-        other
-        uuid
+        location
+        year
       }
     }
   `;
 
+  // some print helpers
+  const pad = (s: string): string => {
+    const lim = 15 - s.length;
+    for (let i = 0; i < lim; i++) {
+      s = s + " ";
+    }
+    return s;
+  };
+
+  const printTeam = (t: any) => {
+    console.log(`${pad(t.name)} : ${t.year} : ${t.location}`);
+  };
+
   request(serverIP, query, null, requestHeaders)
     // just print the length. should be 150
-    .then((data) => console.log("teamsAll : ", data.teamsAll.length))
+    .then((data) => {
+      let t = data.teamsAll;
+
+      // sort by year then by name so names are grouped together
+      // then listed in numeric order
+      t = t.sort((a: any, b: any) => {
+        return a.year > b.year ? 1 : a.year < b.year ? -1 : 0;
+      });
+
+      t = t.sort((a: any, b: any) => {
+        return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+      });
+
+      t.forEach((v: any) => {
+        printTeam(v);
+      });
+    })
     .catch((err: any) => {
       console.log(err);
     });
