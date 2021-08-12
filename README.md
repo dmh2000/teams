@@ -4,27 +4,7 @@
 
 The point of this repo is to provide, in _simple, minimal_ code, an example in Go, of reading a JSON file, uploading it to a Mongodb database, and serving the data using GraphQL.
 
-There's a bit of learning curve if you are starting something like this from scratch, expecially with Mongodb and the GraphQL server. There are other examples but there isn't a single example in one place that has the pieces.
-
-## Main Program
-
-The main program runs through all the steps to get this going. At each step you can just look at the function being called, find its implementation in the 'teams' directory, and see what it does.
-
-### Setup
-
-- have an instance of Mongodb running somewhere you can connect to, and get its connection string.
-- at the top of _main.go_
-  - set the mongodb connection string (mongouri)
-  - set the ip address and port that the GraphQL server will use. This is the address that clients will connect to for GrapQL Queries
-  - set the database name. It defaults to _bb-team-games_, but make sure it unique to your system so you don't step on something important.
-- this required Go 1.16 or later due to changes in ioutil
-
-## 1. Read Json File
-
-- _teams/read_teams.go_
-  - read the JSON file
-  - using encoding/json, unmarshal it into Go objects
-  - at this point you have a slice of Team objects
+There's a bit of learning curve if you are starting something like this from scratch, expecially with Mongodb and the GraphQL server. There are other examples but I haven't seen an example in one place that has all the pieces.
 
 The data used here is derived from the data products provided by [Retrosheet.org](retrosheet.org). Retrosheet does a lot of work to provide historical baseball data going all the way back to 1876. The data used here is a very small subset of what they provide.
 
@@ -36,11 +16,37 @@ Thanks to Retrosheet for making this data available.
      parties may contact Retrosheet at "www.retrosheet.org". 
 </pre>
 
+## Main Program
+
+The main program runs through all the steps to get this going. At each step you can just look at the function being called, find its implementation in the 'teams' directory, and see what it does.
+
+### Setup
+
+- have an instance of Mongodb running somewhere you can connect to, and get its connection string.
+- at the top of _main.go_
+  - set the mongodb connection string (_mongouri_)
+  - set the ip address and port (_serveradr_) that the GraphQL server will use. This is the address that clients will connect to for GrapQL Queries
+  - set the database name (_database_). It defaults to _bb-team-games_, but make sure it unique to your system so you don't step on something important.
+  - if you are running mongodb and this app on the same system, you can probably use _localhost_ for the IP addresses.
+- this required Go 1.16 or later due to changes in ioutil
+
+## 1. Read Json File
+
+- a JSON file _teams.json_ is included
+- _teams/read_teams.go_
+  - function _read_teams_
+  - includes type definition of _Team_
+  - read the JSON file
+  - using encoding/json, unmarshal it into Go objects
+  - at this point you have a slice of Team objects
+
 ## 2. Load it into Mongodb
 
 - _teams/load_teams.go_
-  - drops the existing database. it does this so the example starts clean every time its run
-  - uploads the []Team slice to the Mongodb server
+  - function _DropDatabase_
+    - drops the existing database. it does this so the example starts clean every time its run
+  - function _LoadTeams_
+    - uploads the []Team slice to the Mongodb server
   - most of this is [boilerplate Golang Mongodb](https://docs.mongodb.com/drivers/go/)
     - create a client
     - connect to mongodb
@@ -52,10 +58,12 @@ Thanks to Retrosheet for making this data available.
 
 ## 3. Make sure the database works
 
-- the example runs some test queries
-  - that mongodb is accessible
-  - that the data has been uploaded
-  - that the queries work properly
+- _query_teams_
+  - function _QueryTeams_
+    - runs some test queries
+    - tests that mongodb is accessible
+    - tests that the data has been uploaded
+    - test that the queries work properly
 
 ## 4. Run a GraphQL server
 
@@ -82,10 +90,10 @@ When you run the program with "go run main.go" run through all the steps and end
 
 Once the server is running you can execute some client side queries against it. There are a couple of options. There are two here:
 
-- use Postman (easiest to get going)
 - use a client program, for example using node.js
+- use Postman (easiest to get going)
 
-### Here are the queries you can execute
+### Here are the GraphqQL syntax queries you can execute
 
 ```GraphQL
 {
