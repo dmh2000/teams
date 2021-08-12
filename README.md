@@ -49,16 +49,16 @@ The main program runs through all the steps to get this going. At each step you 
 
 ```Go
 type Team struct {
-	ID     string     // Abbreviation of team name from Retrosheet data
-	Name   string     // Name of the team
-  Location string   // city or state
-  Year   string     // year the franchise started
-	Wins   int        // total wins
-	Losses int        // total losses
-	Ties   int        // total ties (yes there can be ties!)
-	Other  int        // total rainouts and other suspensions
-	Games  int        // sum of wins,losses,ties and other
-	UUID   string     // a unique ID I added as a key
+	ID       string     // Abbreviation of team name from Retrosheet data
+	Name     string     // Name of the team
+	Location string     // city or state
+	Year     string     // year the franchise started
+	Wins     int        // total wins
+	Losses   int        // total losses
+	Ties     int        // total ties (yes there can be ties!)
+	Other    int        // total rainouts and other suspensions
+	Games    int        // sum of wins,losses,ties and other
+	UUID     string     // a unique ID I added as a key
 }
 ```
 
@@ -96,7 +96,7 @@ To implement the server, there are a few steps, all in _server_graphql.go_.
 - compose a schema. In this case is a raw string with the standard GraphQL schema language.
 - set up a Resolver for the objects that are served, in this case one or more _Team_ objects.
   - _teamResolver_
-  - add a method for each of the fields in the Object
+  - add a method for each of the fields in the object
 - create a Root Resolver
   - add methods to the rootResolver type for the supported Queries
   - these methods access the database queries as needed
