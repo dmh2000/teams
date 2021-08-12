@@ -1,0 +1,22 @@
+{
+  "name": "query",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build --watch tsconfig.json",
+    "start": "tsc --watch & nodemon --watch ./js ./js/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql": "^15.5.1",
+    "graphql-request": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.7",
+    "nodemon": "^2.0.12",
+    "typescript": "^4.3.5"
+  }
+}

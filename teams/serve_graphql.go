@@ -1,6 +1,7 @@
 package teams
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -99,6 +100,7 @@ type rootResolver struct{}
 
 // get team by abbreviation
 func (*rootResolver) TeamsByID(args struct{ ID string }) *[]*teamResolver {
+	fmt.Println("ByID")
 	// query the db for the team by the abbreviation
 	// remember, in mongodb the keys are lower case
 	teams, err := QueryTeams(mongodb, database, "id", args.ID)
@@ -133,6 +135,7 @@ func (*rootResolver) TeamsByName(args struct{ Name string }) *[]*teamResolver {
 }
 
 func (*rootResolver) TeamsAll() *[]*teamResolver {
+	fmt.Println("TeamsAll")
 	// query the db for the team by the abbreviation
 	teams, err := QueryTeams(mongodb, database, "", "")
 	if err != nil {
