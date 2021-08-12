@@ -6,7 +6,7 @@ The point of this repo is to provide, in _simple, minimal_ code, an example in G
 
 There's a bit of learning curve if you are starting something like this from scratch, expecially with Mongodb and the GraphQL server. There are other examples but I haven't seen an example in one place that has all the pieces.
 
-The data used here is derived from the data products provided by [Retrosheet.org](retrosheet.org). Retrosheet does a lot of work to provide historical baseball data going all the way back to 1876. The data used here is a very small subset of what they provide.
+The data used here is derived from the data products provided by [Retrosheet.org](retrosheet.org). Retrosheet does a lot of work to provide historical baseball data going all the way back to 1871. The data used here is a very small subset of what they provide.
 
 Thanks to Retrosheet for making this data available.
 
@@ -42,7 +42,7 @@ The main program runs through all the steps to get this going. At each step you 
 
 - at this point you have a slice of Team objects
 
-  - there can and will be multiple teams for most Names because the data goes back to 1876 and it differentiates teams when they move cities
+  - there can and will be multiple teams for most Names because the data goes back to 1871 and it differentiates teams when they move cities
   - there is a whole lot of data in Retrosheet, but I boiled this down to a few fields to use as an example.
 
   - type definition of _Team_
