@@ -93,7 +93,7 @@ The example uses [graphql-go from graph-gophers](https://github.com/graph-gopher
 
 To implement the server, there are a few steps, all in _server_graphql.go_.
 
-- compose a schema. In this case is a raw string with the standard GraphQL schema language.
+- compose a schema. Just a raw string with the standard GraphQL schema language.
 - set up a Resolver for the objects that are served, in this case one or more _Team_ objects.
   - _teamResolver_
   - add a method for each of the fields in the object
