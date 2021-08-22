@@ -7,10 +7,10 @@ import (
 )
 
 // set this to the address clients will connect to
-const serveradr = "172.17.59.222:8080"
+const serveradr = "172.31.189.50:8080"
 
 // set this to the connection string for your mongodb instance
-const mongouri = "mongodb://172.17.48.1:27017"
+const mongouri = "mongodb://172.31.176.1:27017"
 
 // set this to the database name that will be created on your mongodb instance
 const database = "bb-teams"
